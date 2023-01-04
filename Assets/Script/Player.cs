@@ -21,12 +21,16 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _tripleLaserPrefab;
     [SerializeField]
+    private GameObject _thrusterPrefab;
+    [SerializeField]
+    private GameObject _shieldPrefab;
+    [SerializeField]
     private GameObject _laserContainer;
     private SpawnManager _spawnManager;
     // Start is called before the first frame update
     void Start()
     {
-        this.speed = CommonExtension.getRandomSpeed(20, 30);
+        this.speed = 15 * Time.deltaTime;
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (_spawnManager == null)

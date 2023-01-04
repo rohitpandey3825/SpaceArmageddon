@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.speed = CommonExtension.getRandomSpeed(10, 25);
+        this.speed = CommonExtension.getRandomSpeed(10, 20);
         transform.position = new Vector3(CommonExtension.getRandomFloat(-10, 10), 20f, transform.position.z);
     }
 
@@ -54,7 +54,11 @@ public class Enemy : MonoBehaviour
 
         if (other.tag.Equals("Laser"))
         {
-            Destroy(other.gameObject);
+            var laser = other.transform.GetComponent<Laser>();
+            if (laser != null)
+            {
+                laser.DestroyLaser();
+            }
             Destroy(this.gameObject);
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
+    [SerializeField]
     private float speed;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,19 @@ public class Laser : MonoBehaviour
     private void recycle()
     {
         if (this.transform.position.y > 20f)
+        {
+            this.DestroyLaser();
+        }
+    }
+
+    public void DestroyLaser()
+    {
+        Transform parent = transform.parent;
+        if(parent != null && parent.name.Contains("TripleShot"))
+        {
+            Destroy(parent.gameObject);
+        }
+        else
         {
             Destroy(gameObject);
         }

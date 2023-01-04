@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class Powerups : MonoBehaviour
 {
+    [SerializeField]
     private float speed;
-    private int life = 5;
+    //private int life = 5;
 
     [SerializeField]
     private GameObject _laserPrefab;
@@ -15,7 +16,7 @@ public class Powerups : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.speed = CommonExtension.getRandomSpeed(10, 25);
+        this.speed = 15 * Time.deltaTime;
         transform.position = new Vector3(CommonExtension.getRandomFloat(-10, 10), 20f, transform.position.z);
     }
 
@@ -30,11 +31,11 @@ public class Powerups : MonoBehaviour
 
         if (transform.position.y < 0)
         {
-            transform.position = new Vector3(CommonExtension.getRandomFloat(-10, 10), 20f, transform.position.z);
-            life--;
-        }
-        if (this.life < 0)
-        {
+        //    transform.position = new Vector3(CommonExtension.getRandomFloat(-10, 10), 20f, transform.position.z);
+        //    life--;
+        //}
+        //if (this.life < 0)
+        //{
             Destroy(this.gameObject);
         }
     }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4521837918313849160}
   - component: {fileID: 534305373080011728}
   - component: {fileID: -4575727739488212452}
+  - component: {fileID: 7298537072734417169}
   m_Layer: 0
   m_Name: ShieldPowerUp
   m_TagString: Untagged
@@ -146,4 +147,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dc7cbafa2599d943a46204a3a35344f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
   _laserPrefab: {fileID: 3616346677146574224, guid: 64d1dc4a32eaf3341ad42af802323e40, type: 3}
+--- !u!95 &7298537072734417169
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3163217121242761831}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6baeb0a1d4e5a8f4db93609b71f3447f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -26,15 +26,15 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    IEnumerator WaitAndCreatePowerUp(float StartTime, float WaitTime)
+    IEnumerator WaitAndCreatePowerUp(float WaitTime)
     {
-        yield return new WaitForSeconds(StartTime);
+        yield return new WaitForSeconds(WaitTime);
         while (true)
         {
             var powerupPrefab = _powerUpsPrefabs.getRandomPowerUp();
             if (this.spawn)
             {
-                Instantiate(powerupPrefab, _EnemyContainer.transform);
+                Instantiate(powerupPrefab);
                 yield return new WaitForSeconds(WaitTime);
             }
         }
@@ -53,8 +53,8 @@ public class SpawnManager : MonoBehaviour
         {
             var time = CommonExtension.getRandomFloat(5, 10);
             StartCoroutine(WaitAndCreate(time));
-            time = CommonExtension.getRandomFloat(15, 30);
-            StartCoroutine(WaitAndCreatePowerUp(10,time));
+            time = CommonExtension.getRandomFloat(5, 10);
+            StartCoroutine(WaitAndCreatePowerUp(time));
         }
     }
 
