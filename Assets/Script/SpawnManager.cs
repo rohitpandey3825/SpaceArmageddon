@@ -40,6 +40,12 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        var time = 5;//CommonExtension.getRandomFloat(15, 25);
+        StartCoroutine(WaitAndCreatePowerUp(time));
+    }
+
     void Update()
     {
         createSpawn();
@@ -53,8 +59,6 @@ public class SpawnManager : MonoBehaviour
         {
             var time = CommonExtension.getRandomFloat(5, 10);
             StartCoroutine(WaitAndCreate(time));
-            time = CommonExtension.getRandomFloat(5, 10);
-            StartCoroutine(WaitAndCreatePowerUp(time));
         }
     }
 

@@ -8,6 +8,13 @@ using UnityEngine;
 
 namespace Assets.Common
 {
+    public enum PowerUp
+    {
+        Sheild = 0,
+        Speed=1,
+        tripleShot =2,
+    }
+
     [Serializable]
     public class PowerUps
     {
@@ -17,14 +24,14 @@ namespace Assets.Common
 
         public GameObject getRandomPowerUp()
         {
-            int i = CommonExtension.getRandomInt(1, 3);
-            switch (i)
+            int i = CommonExtension.getRandomInt(0, 100)%3;
+            switch ((PowerUp)i)
             {
-                case 0:
+                case PowerUp.Sheild:
                     return Sheild;
-                case 1:
+                case PowerUp.Speed:
                     return Speed;
-                case 2:
+                case PowerUp.tripleShot:
                     return TripleShot;
             }
             return null;

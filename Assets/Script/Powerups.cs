@@ -6,10 +6,11 @@ using UnityEngine;
 
 public class Powerups : MonoBehaviour
 {
-    [SerializeField]
     private float speed;
-    //private int life = 5;
+    private int life = 2;
 
+    [SerializeField]
+    private PowerUp powerup;
     [SerializeField]
     private GameObject _laserPrefab;
 
@@ -31,11 +32,11 @@ public class Powerups : MonoBehaviour
 
         if (transform.position.y < 0)
         {
-        //    transform.position = new Vector3(CommonExtension.getRandomFloat(-10, 10), 20f, transform.position.z);
-        //    life--;
-        //}
-        //if (this.life < 0)
-        //{
+            transform.position = new Vector3(CommonExtension.getRandomFloat(-10, 10), 20f, transform.position.z);
+            life--;
+        }
+        if (this.life < 0)
+        {
             Destroy(this.gameObject);
         }
     }
@@ -50,7 +51,7 @@ public class Powerups : MonoBehaviour
             var player = other.transform.GetComponent<Player>();
             if (player != null)
             {
-                player.EnableTripleShot();
+                player.EnablePowerUp(this.powerup);
             }   
             else
             {
@@ -59,10 +60,10 @@ public class Powerups : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        if (other.tag.Equals("Laser"))
-        {
-            Destroy(other.gameObject);
-            Destroy(this.gameObject);
-        }
+        //if (other.tag.Equals("Laser"))
+        //{
+        //    Destroy(other.gameObject);
+        //    Destroy(this.gameObject);
+        //}
     }
 }

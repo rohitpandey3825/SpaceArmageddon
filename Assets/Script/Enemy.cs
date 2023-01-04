@@ -51,7 +51,10 @@ public class Enemy : MonoBehaviour
               
             Destroy(this.gameObject);
         }
-
+        if (other.tag.Equals("Sheild"))
+        {
+            Destroy(this.gameObject);
+        }
         if (other.tag.Equals("Laser"))
         {
             var laser = other.transform.GetComponent<Laser>();

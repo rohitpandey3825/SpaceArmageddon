@@ -262,7 +262,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080206194}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 9, z: -20}
+  m_LocalPosition: {x: 0, y: 8, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -440,7 +440,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1546111735}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0236, y: 9.015, z: 0}
+  m_LocalPosition: {x: -0.011, y: 8.006, z: 0}
   m_LocalScale: {x: 2.1402, y: 2.1416, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -460,6 +460,7 @@ GameObject:
   - component: {fileID: 1684252366}
   - component: {fileID: 1684252369}
   - component: {fileID: 1684252370}
+  - component: {fileID: 1684252371}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -483,6 +484,8 @@ MonoBehaviour:
   lifes: 3
   _laserPrefab: {fileID: 3616346677146574224, guid: 64d1dc4a32eaf3341ad42af802323e40, type: 3}
   _tripleLaserPrefab: {fileID: 297116555329028580, guid: 1bdd737edb2a465428a593a31785a85e, type: 3}
+  _thrusterPrefab: {fileID: 0}
+  _shieldPrefab: {fileID: 0}
   _laserContainer: {fileID: 344768279}
 --- !u!212 &1684252367
 SpriteRenderer:
@@ -545,7 +548,7 @@ Transform:
   m_GameObject: {fileID: 1684252364}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -598,6 +601,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &1684252371
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684252364}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3086a152cb9a4bd469a397258493f161, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1839393913
 GameObject:
   m_ObjectHideFlags: 0

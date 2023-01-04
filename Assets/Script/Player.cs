@@ -109,9 +109,20 @@ public class Player : MonoBehaviour
         return Vector3.right * HorizontalInput + Vector3.up * VerticalInput;
     }
 
-    public void EnableTripleShot()
+    public void EnablePowerUp(PowerUp powerUp)
     {
-        StartCoroutine(this.EnableThenDisableTripleShot());
+        switch (powerUp)
+        {
+            case PowerUp.Sheild:
+                 StartCoroutine(this.EnableThenDisableSheild());
+                break;
+            case PowerUp.Speed:
+                StartCoroutine(this.EnableThenDoubleSpeed());
+                break;
+            case PowerUp.tripleShot:
+                StartCoroutine(this.EnableThenDisableTripleShot());
+                break;
+        }
     }
 
     private IEnumerator EnableThenDisableTripleShot()
@@ -119,6 +130,23 @@ public class Player : MonoBehaviour
         this.isTripleShotEnabled = true;
         yield return new WaitForSeconds(10);
         this.isTripleShotEnabled = false;
+    }
+    
+    private IEnumerator EnableThenDisableSheild()
+    {
+        var shieldClone = Instantiate(_shieldPrefab, transform.position , Quaternion.identity, transform);
+        yield return new WaitForSeconds(10);
+        Destroy(shieldClone);
+    }
+
+    private IEnumerator EnableThenDoubleSpeed()
+    {
+        var actualSpeed=this.speed;
+        var thrusterClone= Instantiate(_thrusterPrefab, transform.position + new Vector3(0, -3f, 0), Quaternion.identity, transform);
+        this.speed = 2* this.speed;
+        yield return new WaitForSeconds(10);
+        this.speed = actualSpeed;
+        Destroy(thrusterClone);
     }
 
     public void Damage(int value)
