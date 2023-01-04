@@ -1,4 +1,4 @@
-using Common;
+using Assets.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +8,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private float speed;
-    private float fireRate = .5f;
-    private float nextFire = 0.0f;
+    private float fireRate = .5f ;
+    private float nextFire = 0 ;
+    private bool isTripleShotEnabled = false;
 
     [SerializeField]
     private int health = 100;
@@ -17,13 +18,21 @@ public class Player : MonoBehaviour
     private int lifes = 3;
     [SerializeField]
     private GameObject _laserPrefab;
-
+    [SerializeField]
+    private GameObject _tripleLaserPrefab;
+    [SerializeField]
+    private GameObject _laserContainer;
+    private SpawnManager _spawnManager;
     // Start is called before the first frame update
     void Start()
     {
-        this.speed = CommonExtension.getRandomSpeed(20,30);
+        this.speed = CommonExtension.getRandomSpeed(20, 30);
         transform.position = new Vector3(0, 0, 0);
-        
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+        {
+            print("spawn maager is Null");
+        }
     }
 
     // Update is called once per frame
@@ -31,19 +40,21 @@ public class Player : MonoBehaviour
     {
         FireLaser();
         CalculateMovement();
+        
     }
 
     private void FireLaser()
     {
-        var input = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Joystick1Button0); 
-        if ( input && Time.time > nextFire)
+         var initPrefab = isTripleShotEnabled ? _tripleLaserPrefab : _laserPrefab;
+        var input = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Joystick1Button0);
+        if (input && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-          //  if (count <= 6)
-          //  {
-          //      this.count++;
-                Instantiate(_laserPrefab, transform.position + new Vector3(0, .8f, 0), Quaternion.identity);
-         //   }
+            //  if (count <= 6)
+            //  {
+            //      this.count++;
+            Instantiate(initPrefab, transform.position + new Vector3(0, .8f, 0), Quaternion.identity, _laserContainer.transform);
+            //   }
         }
 
     }
@@ -58,14 +69,14 @@ public class Player : MonoBehaviour
     {
         var newPositon = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         bool isReposition = false;
-        if (transform.position.x > 10)
+        if (transform.position.x > 20)
         {
-            newPositon.x = -10;
+            newPositon.x = -20;
             isReposition = true;
         }
-        else if (transform.position.x < -10)
+        else if (transform.position.x < -20)
         {
-            newPositon.x = 10;
+            newPositon.x = 20;
             isReposition = true;
         }
         if (transform.position.y >= 10)
@@ -84,7 +95,7 @@ public class Player : MonoBehaviour
             isReposition = true;
         }
 
-        if(isReposition) 
+        if (isReposition)
             transform.position = newPositon;
     }
     private Vector3 getPositionVector()
@@ -94,17 +105,34 @@ public class Player : MonoBehaviour
         return Vector3.right * HorizontalInput + Vector3.up * VerticalInput;
     }
 
+    public void EnableTripleShot()
+    {
+        StartCoroutine(this.EnableThenDisableTripleShot());
+    }
+
+    private IEnumerator EnableThenDisableTripleShot()
+    {
+        this.isTripleShotEnabled = true;
+        yield return new WaitForSeconds(10);
+        this.isTripleShotEnabled = false;
+    }
+
     public void Damage(int value)
     {
         this.health = health - value;
-        if(health < 0)
+        if (health < 0)
         {
             this.health = 100;
             lifes--;
         }
-        if(lifes < 0)
+        if (lifes < 0)
         {
             Destroy(this.gameObject);
+            if (_spawnManager != null)
+            {
+                _spawnManager.DestroyAllSubroutines();
+                Destroy(_spawnManager);
+            }
         }
     }
 

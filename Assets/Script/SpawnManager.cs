@@ -1,32 +1,48 @@
 using UnityEngine;
 using System.Collections;
-using Common;
-using System.Collections.Generic;
+using Assets.Common;
+using System.Threading.Tasks;
 
 public class SpawnManager : MonoBehaviour
 {
-    private bool spawn = false;
+    private bool spawn = true;
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
+    private PowerUps _powerUpsPrefabs;
+    [SerializeField]
     private GameObject _EnemyContainer;
+
     IEnumerator WaitAndCreate(float WaitTime)
     {
-        // suspend execution for 5 seconds
+        // suspend execution for WaitTime seconds
         while (true)
         {
             if (this.spawn)
             {
-               Instantiate(_enemyPrefab, _EnemyContainer.transform);
+                Instantiate(_enemyPrefab, _EnemyContainer.transform);
+                yield return new WaitForSeconds(WaitTime);
             }
-            yield return new WaitForSeconds(WaitTime);
+        }
+    }
+
+    IEnumerator WaitAndCreatePowerUp(float StartTime, float WaitTime)
+    {
+        yield return new WaitForSeconds(StartTime);
+        while (true)
+        {
+            var powerupPrefab = _powerUpsPrefabs.getRandomPowerUp();
+            if (this.spawn)
+            {
+                Instantiate(powerupPrefab, _EnemyContainer.transform);
+                yield return new WaitForSeconds(WaitTime);
+            }
         }
     }
 
     void Update()
     {
         createSpawn();
-        stopSpawn();
         DestroySubroutines();
     }
 
@@ -36,11 +52,12 @@ public class SpawnManager : MonoBehaviour
         if (input)
         {
             var time = CommonExtension.getRandomFloat(5, 10);
-            print($"Spawner created at {Time.time} which will repete every {time} seconds");
             StartCoroutine(WaitAndCreate(time));
-            print("Spawner Ended" + Time.time);
+            time = CommonExtension.getRandomFloat(15, 30);
+            StartCoroutine(WaitAndCreatePowerUp(10,time));
         }
     }
+
     private void DestroySubroutines()
     {
         var input = Input.GetKeyDown(KeyCode.Escape);
@@ -50,12 +67,16 @@ public class SpawnManager : MonoBehaviour
             print("All WaitAndCreate Ended" + Time.time);
         }
     }
-    private void stopSpawn()
+
+    public void DestroyAllSubroutines()
     {
-        var input = Input.GetKeyDown(KeyCode.LeftControl);
-        if (input)
-        {
-            this.spawn = !this.spawn;
-        }
+        this.StopAllCoroutines();
+        this.stopSpawn();
+        print("All WaitAndCreate Ended" + Time.time);
+    }
+
+    private void stopSpawn()
+    {      
+        this.spawn = !this.spawn;
     }
 }

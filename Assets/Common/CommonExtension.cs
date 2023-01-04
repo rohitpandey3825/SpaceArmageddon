@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Common
+namespace Assets.Common
 {
     public static class CommonExtension
     {
@@ -10,6 +10,11 @@ namespace Common
         }
 
         public static float getRandomFloat(float from, float to)
+        {
+            return Random.Range(from, to);
+        }
+
+        public static int getRandomInt(int from, int to)
         {
             return Random.Range(from, to);
         }
