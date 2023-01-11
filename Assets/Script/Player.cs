@@ -7,15 +7,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
     private float speed;
     private float fireRate = .5f ;
     private float nextFire = 0 ;
     private bool isTripleShotEnabled = false;
+    private bool isSheildACtive = false;
 
-    [SerializeField]
-    private int health = 100;
-    [SerializeField]
-    private int lifes = 3;
+    
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -27,16 +26,24 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserContainer;
     private SpawnManager _spawnManager;
+    private UIManager _uiManger;
     // Start is called before the first frame update
     void Start()
     {
-        this.speed = 15 * Time.deltaTime;
+        this.speed = 20 * Time.deltaTime;
         transform.position = new Vector3(0, 0, 0);
+        _uiManger = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if (_uiManger == null)
+        {
+            print("UI maager is Null");
+        }
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
         {
             print("spawn maager is Null");
         }
+        this._shieldPrefab.SetActive(false);
+        this._thrusterPrefab.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,7 +56,7 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-         var initPrefab = isTripleShotEnabled ? _tripleLaserPrefab : _laserPrefab;
+        var initPrefab = isTripleShotEnabled ? _tripleLaserPrefab : _laserPrefab;
         var input = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Joystick1Button0);
         if (input && Time.time > nextFire)
         {
@@ -134,30 +141,39 @@ public class Player : MonoBehaviour
     
     private IEnumerator EnableThenDisableSheild()
     {
-        var shieldClone = Instantiate(_shieldPrefab, transform.position , Quaternion.identity, transform);
+        this.isSheildACtive = true;
+        //var shieldClone = Instantiate(_shieldPrefab, transform.position , Quaternion.identity, transform);
+        this._shieldPrefab.SetActive(true);
         yield return new WaitForSeconds(10);
-        Destroy(shieldClone);
+        //Destroy(shieldClone);
+        this._shieldPrefab.SetActive(false);
+        this.isSheildACtive = false;
     }
 
     private IEnumerator EnableThenDoubleSpeed()
     {
         var actualSpeed=this.speed;
-        var thrusterClone= Instantiate(_thrusterPrefab, transform.position + new Vector3(0, -3f, 0), Quaternion.identity, transform);
+        //var thrusterClone= Instantiate(_thrusterPrefab, transform.position + new Vector3(0, -3f, 0), Quaternion.identity, transform);
+        this._thrusterPrefab.SetActive(true);
         this.speed = 2* this.speed;
         yield return new WaitForSeconds(10);
         this.speed = actualSpeed;
-        Destroy(thrusterClone);
+        this._thrusterPrefab.SetActive(false);
+        //Destroy(thrusterClone);
+    }
+
+    public void incrementScore()
+    {
+        if(_uiManger!=null)
+        {
+            _uiManger.incrimentScore();
+        }
     }
 
     public void Damage(int value)
     {
-        this.health = health - value;
-        if (health < 0)
-        {
-            this.health = 100;
-            lifes--;
-        }
-        if (lifes < 0)
+        if (isSheildACtive) return;
+        if(!_uiManger.decrimentHealth(value))
         {
             Destroy(this.gameObject);
             if (_spawnManager != null)

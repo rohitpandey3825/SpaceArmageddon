@@ -17,7 +17,7 @@ public class Powerups : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.speed = 15 * Time.deltaTime;
+        this.speed = 10 * Time.deltaTime;
         transform.position = new Vector3(CommonExtension.getRandomFloat(-10, 10), 20f, transform.position.z);
     }
 

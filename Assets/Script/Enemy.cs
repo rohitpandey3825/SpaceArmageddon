@@ -8,15 +8,19 @@ public class Enemy : MonoBehaviour
 {
     private float speed;
     private int life = 5;
-
+    private Player player;
     [SerializeField]
     private GameObject _laserPrefab;
-
     // Start is called before the first frame update
     void Start()
     {
         this.speed = CommonExtension.getRandomSpeed(10, 20);
         transform.position = new Vector3(CommonExtension.getRandomFloat(-10, 10), 20f, transform.position.z);
+        player = GameObject.Find("Player").GetComponent<Player>();
+        if (player == null)
+        {
+            print("player is Null");
+        }
     }
 
     // Update is called once per frame
@@ -48,11 +52,12 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage(20);
             }
-              
+            player.incrementScore();  
             Destroy(this.gameObject);
         }
         if (other.tag.Equals("Sheild"))
         {
+            player.incrementScore();
             Destroy(this.gameObject);
         }
         if (other.tag.Equals("Laser"))
@@ -62,6 +67,7 @@ public class Enemy : MonoBehaviour
             {
                 laser.DestroyLaser();
             }
+            player.incrementScore();
             Destroy(this.gameObject);
         }
     }

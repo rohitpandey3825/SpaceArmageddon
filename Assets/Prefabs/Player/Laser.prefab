@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -6627958203196081779}
   - component: {fileID: 4941485709283277269}
   - component: {fileID: 2938371468816766452}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Laser
   m_TagString: Laser
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c428d6d0d8977b643978cc758e26bf85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
 --- !u!212 &-6627958203196081779
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -85,8 +86,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1102678821
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b030d335857201646be69703e678d6e5, type: 3}
   m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}

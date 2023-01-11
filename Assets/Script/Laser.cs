@@ -10,7 +10,7 @@ public class Laser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.speed = 20 * Time.deltaTime;//      CommonExtension.getRandomSpeed(1,40);
+        this.speed = 25 * Time.deltaTime;//      CommonExtension.getRandomSpeed(1,40);
     }
 
     // Update is called once per frame
