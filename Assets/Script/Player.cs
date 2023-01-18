@@ -130,6 +130,7 @@ public class Player : MonoBehaviour
                 StartCoroutine(this.EnableThenDisableTripleShot());
                 break;
         }
+        _uiManger.enablePowerUp(powerUp);
     }
 
     private IEnumerator EnableThenDisableTripleShot()
@@ -137,8 +138,9 @@ public class Player : MonoBehaviour
         this.isTripleShotEnabled = true;
         yield return new WaitForSeconds(10);
         this.isTripleShotEnabled = false;
+        _uiManger.DisablePowerUp();
     }
-    
+
     private IEnumerator EnableThenDisableSheild()
     {
         this.isSheildACtive = true;
@@ -148,6 +150,7 @@ public class Player : MonoBehaviour
         //Destroy(shieldClone);
         this._shieldPrefab.SetActive(false);
         this.isSheildACtive = false;
+        _uiManger.DisablePowerUp();
     }
 
     private IEnumerator EnableThenDoubleSpeed()
@@ -160,6 +163,7 @@ public class Player : MonoBehaviour
         this.speed = actualSpeed;
         this._thrusterPrefab.SetActive(false);
         //Destroy(thrusterClone);
+        _uiManger.DisablePowerUp();
     }
 
     public void incrementScore()

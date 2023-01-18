@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Assets.Common;
 
 public class UIManager : MonoBehaviour
 {
+    private bool _isDestroyed = false;
     [SerializeField]
     private int _score = 0;
     [SerializeField]
@@ -19,14 +21,26 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Image _lifeDisplay;
     [SerializeField]
+    private Slider slider;
+    [SerializeField]
     private Sprite[] _lifeSprite;
+    [SerializeField]
+    private TextMeshProUGUI _gameOverText;
+    [SerializeField]
+    private TextMeshProUGUI _restartText;
+    [SerializeField]
+    private GameManager _gameManager;
+
+    private float time = 0f;
+    private float fillAmount = 0f;
+    private int powerUpCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         _scoreText.text = "Score: " + _score;
         _healthText.text = "Health: " + _health;
-
+        StartCoroutine(FillSlider());
     }
 
     // Update is called once per frame
@@ -37,6 +51,34 @@ public class UIManager : MonoBehaviour
         _lifeDisplay.sprite = _lifeSprite[this._life];
     }
 
+    IEnumerator gameOverCorutine()
+    {
+        var gameOver = true;
+        while (true)
+        {
+            if (this._isDestroyed)
+            {
+                this._gameOverText.colorGradient = new VertexGradient(CommonExtension.getRandomColor(), CommonExtension.getRandomColor(), CommonExtension.getRandomColor(), CommonExtension.getRandomColor());
+                this._gameOverText.gameObject.SetActive(gameOver);
+                yield return new WaitForSeconds(0.5f);
+                gameOver = !gameOver;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    private void gameOver()
+    {
+        this._isDestroyed = true;
+        _restartText.gameObject.SetActive(true);
+        StartCoroutine(gameOverCorutine());
+        _gameManager.gameOver();
+
+    }
+
     public void incrimentScore()
     {
         this._score++;
@@ -45,7 +87,7 @@ public class UIManager : MonoBehaviour
     public bool decrimentHealth(int value)
     {
         this._health = _health - value;
-        if (_health < 0)
+        if (_health <= 0)
         {
             this._health = 100;
             this._life--;
@@ -53,9 +95,72 @@ public class UIManager : MonoBehaviour
         if (this._life == 0)
         {
             this._health = 0;
+            this.gameOver();
             return false;
         }
         else
             return true;
     }
+
+    public void enablePowerUp(PowerUp powerUps)
+    {
+        SetSliderColor(powerUps);
+        slider.gameObject.SetActive(true);
+        powerUpCount++;
+    }
+
+    public void DisablePowerUp()
+    {
+        powerUpCount--;
+        if (powerUpCount == 0)
+        {
+            slider.gameObject.SetActive(false);
+        }
+    }
+
+    private IEnumerator FillSlider()
+    {
+        while (true)
+        {
+            // Enable the slider
+            if (time < 10f)
+            {
+                time += Time.deltaTime;
+                fillAmount = time / 10f;
+                slider.value = fillAmount;
+            }
+            yield return null;
+        }
+    }
+
+    private void SetSliderColor(PowerUp powerUps)
+    {
+        Color newColor = getSliderColor(powerUps);
+        this.time = 0f;
+        this.fillAmount = 0f;
+        Image[] images = slider.GetComponentsInChildren<Image>();
+        foreach (Image image in images)
+        {
+            if (image.name == "Fill")
+            {
+                image.color = newColor;
+                break;
+            }
+        }
+    }
+
+    private Color getSliderColor(PowerUp powerUps)
+    {
+        switch (powerUps)
+        {
+            case PowerUp.Sheild:
+                return Color.blue;
+            case PowerUp.Speed:
+                return Color.red;
+            case PowerUp.tripleShot:
+                return Color.green;
+        }
+        return Color.white;
+    }
+
 }

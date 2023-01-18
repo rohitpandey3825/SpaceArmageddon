@@ -18,5 +18,10 @@ namespace Assets.Common
         {
             return Random.Range(from, to);
         }
+        
+        public static Color getRandomColor()
+        {
+            return Random.ColorHSV();
+        }
     }
 }

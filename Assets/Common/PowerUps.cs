@@ -10,9 +10,10 @@ namespace Assets.Common
 {
     public enum PowerUp
     {
+        None = -1,
         Sheild = 0,
-        Speed=1,
-        tripleShot =2,
+        Speed = 1,
+        tripleShot = 2,
     }
 
     [Serializable]
@@ -24,7 +25,7 @@ namespace Assets.Common
 
         public GameObject getRandomPowerUp()
         {
-            int i = CommonExtension.getRandomInt(0, 100)%3;
+            int i = CommonExtension.getRandomInt(0, 100) % 3;
             switch ((PowerUp)i)
             {
                 case PowerUp.Sheild:

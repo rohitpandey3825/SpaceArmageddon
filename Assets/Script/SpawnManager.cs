@@ -64,7 +64,7 @@ public class SpawnManager : MonoBehaviour
 
     private void DestroySubroutines()
     {
-        var input = Input.GetKeyDown(KeyCode.Escape);
+        var input = Input.GetKeyDown(KeyCode.KeypadEnter);
         if (input)
         {
             StopAllCoroutines();
