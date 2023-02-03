@@ -9,12 +9,12 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float speed;
-    private float fireRate = .5f ;
-    private float nextFire = 0 ;
+    private float fireRate = .5f;
+    private float nextFire = 0;
     private bool isTripleShotEnabled = false;
     private bool isSheildACtive = false;
 
-    
+
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -23,6 +23,10 @@ public class Player : MonoBehaviour
     private GameObject _thrusterPrefab;
     [SerializeField]
     private GameObject _shieldPrefab;
+    [SerializeField]
+    private GameObject _leftDamagePrefab;
+    [SerializeField]
+    private GameObject _rightDamagePrefab;
     [SerializeField]
     private GameObject _laserContainer;
     private SpawnManager _spawnManager;
@@ -44,6 +48,8 @@ public class Player : MonoBehaviour
         }
         this._shieldPrefab.SetActive(false);
         this._thrusterPrefab.SetActive(false);
+        this._leftDamagePrefab.SetActive(false);
+        this._rightDamagePrefab.SetActive(false);
     }
 
     // Update is called once per frame
@@ -51,7 +57,7 @@ public class Player : MonoBehaviour
     {
         FireLaser();
         CalculateMovement();
-        
+
     }
 
     private void FireLaser()
@@ -121,7 +127,7 @@ public class Player : MonoBehaviour
         switch (powerUp)
         {
             case PowerUp.Sheild:
-                 StartCoroutine(this.EnableThenDisableSheild());
+                StartCoroutine(this.EnableThenDisableSheild());
                 break;
             case PowerUp.Speed:
                 StartCoroutine(this.EnableThenDoubleSpeed());
@@ -155,10 +161,10 @@ public class Player : MonoBehaviour
 
     private IEnumerator EnableThenDoubleSpeed()
     {
-        var actualSpeed=this.speed;
+        var actualSpeed = this.speed;
         //var thrusterClone= Instantiate(_thrusterPrefab, transform.position + new Vector3(0, -3f, 0), Quaternion.identity, transform);
         this._thrusterPrefab.SetActive(true);
-        this.speed = 2* this.speed;
+        this.speed = 2 * this.speed;
         yield return new WaitForSeconds(10);
         this.speed = actualSpeed;
         this._thrusterPrefab.SetActive(false);
@@ -168,7 +174,7 @@ public class Player : MonoBehaviour
 
     public void incrementScore()
     {
-        if(_uiManger!=null)
+        if (_uiManger != null)
         {
             _uiManger.incrimentScore();
         }
@@ -177,14 +183,23 @@ public class Player : MonoBehaviour
     public void Damage(int value)
     {
         if (isSheildACtive) return;
-        if(!_uiManger.decrimentHealth(value))
+        switch (_uiManger.decrimentHealth(value))
         {
-            Destroy(this.gameObject);
-            if (_spawnManager != null)
-            {
-                _spawnManager.DestroyAllSubroutines();
-                Destroy(_spawnManager);
-            }
+            case 0:
+                Destroy(this.gameObject);
+                if (_spawnManager != null)
+                {
+                    _spawnManager.DestroyAllSubroutines();
+                    Destroy(_spawnManager);
+                }
+                break;
+
+            case 1:
+                this._leftDamagePrefab.SetActive(true);
+                break;
+            case 2:
+                this._rightDamagePrefab.SetActive(true);
+                break;
         }
     }
 

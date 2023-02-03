@@ -84,7 +84,7 @@ public class UIManager : MonoBehaviour
         this._score++;
     }
 
-    public bool decrimentHealth(int value)
+    public int decrimentHealth(int value)
     {
         this._health = _health - value;
         if (_health <= 0)
@@ -96,10 +96,8 @@ public class UIManager : MonoBehaviour
         {
             this._health = 0;
             this.gameOver();
-            return false;
         }
-        else
-            return true;
+        return this._life;
     }
 
     public void enablePowerUp(PowerUp powerUps)

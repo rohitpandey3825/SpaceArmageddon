@@ -7,10 +7,11 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private float speed;
+    private bool isDestroyed=false;
     private int life = 5;
     private Player player;
-    [SerializeField]
-    private GameObject _laserPrefab;
+
+    Animator m_Animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,7 @@ public class Enemy : MonoBehaviour
         {
             print("player is Null");
         }
+        m_Animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -34,17 +36,27 @@ public class Enemy : MonoBehaviour
     
         if (transform.position.y < 0)
         {
-            transform.position = new Vector3(CommonExtension.getRandomFloat(-10,10), 20f, transform.position.z);
-            life--;
-        }
-        if(this.life < 0)
-        {
+        //    transform.position = new Vector3(CommonExtension.getRandomFloat(-10,10), 20f, transform.position.z);
+        //    life--;
+        //}
+        //if(this.life < 0)
+        //{
             Destroy(this.gameObject);
         }
     }
 
+    private void DestroyEnemy()
+    {
+        m_Animator.SetTrigger("OnEnemyDeath");
+        this.speed = 0;
+        this.isDestroyed = true;
+        Destroy(this.gameObject,2.5f);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if(isDestroyed)
+            return;
         if(other.tag.Equals("Player"))
         {
             var player = other.transform.GetComponent<Player>();
@@ -52,13 +64,13 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage(20);
             }
-            player.incrementScore();  
-            Destroy(this.gameObject);
+            player.incrementScore();
+            this.DestroyEnemy();
         }
         if (other.tag.Equals("Sheild"))
         {
             player.incrementScore();
-            Destroy(this.gameObject);
+            this.DestroyEnemy();
         }
         if (other.tag.Equals("Laser"))
         {
@@ -68,7 +80,7 @@ public class Enemy : MonoBehaviour
                 laser.DestroyLaser();
             }
             player.incrementScore();
-            Destroy(this.gameObject);
+            this.DestroyEnemy();
         }
     }
 }

@@ -9,6 +9,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
+    private GameObject _astroidPrefab;
+    [SerializeField]
     private PowerUps _powerUpsPrefabs;
     [SerializeField]
     private GameObject _EnemyContainer;
@@ -21,6 +23,19 @@ public class SpawnManager : MonoBehaviour
             if (this.spawn)
             {
                 Instantiate(_enemyPrefab, _EnemyContainer.transform);
+                yield return new WaitForSeconds(WaitTime);
+            }
+        }
+    }
+
+    IEnumerator WaitAndCreateAstroids(float WaitTime)
+    {
+        // suspend execution for WaitTime seconds
+      //  while (true)
+        {
+            if (this.spawn)
+            {
+                Instantiate(_astroidPrefab, _EnemyContainer.transform);
                 yield return new WaitForSeconds(WaitTime);
             }
         }
@@ -43,6 +58,15 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         var time = 5;//CommonExtension.getRandomFloat(15, 25);
+
+        StartCoroutine(WaitAndCreateAstroids(time));
+    }
+
+    public void startSpawning()
+    {
+        var time = 5;//CommonExtension.getRandomFloat(15, 25);
+
+        StartCoroutine(WaitAndCreate(time));
         StartCoroutine(WaitAndCreatePowerUp(time));
     }
 
@@ -57,7 +81,7 @@ public class SpawnManager : MonoBehaviour
         var input = Input.GetKeyDown(KeyCode.Tab);
         if (input)
         {
-            var time = CommonExtension.getRandomFloat(5, 10);
+            var time = 1;//CommonExtension.getRandomFloat(5, 10);
             StartCoroutine(WaitAndCreate(time));
         }
     }
